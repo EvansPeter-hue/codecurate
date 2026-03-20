@@ -1,15 +1,18 @@
 <?php
 // config/db.php  — Database connection
 // ────────────────────────────────────────
-// Change these values to match your XAMPP / hosting setup
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'codecurate');
-define('DB_USER', 'root');
-define('DB_PASS', '');          // XAMPP default is empty; change if you set a password
+// Automatically uses Railway env variables in production,
+// falls back to XAMPP settings for local development
+
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+define('DB_PORT', getenv('MYSQLPORT') ?: '3306');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'codecurate');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
 
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS
     );
